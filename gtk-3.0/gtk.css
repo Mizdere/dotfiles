@@ -1,0 +1,14 @@
+.thunar .standard-view .view,
+.thunar .sidebar .view,
+.thunar toolbar,
+.thunar statusbar,
+.thunar menubar {
+    background-color: #272422;
+    color: #c9c8c7;
+}
+.thunar .view:selected,
+.thunar .sidebar .view:selected {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    padding: 2px;
+}

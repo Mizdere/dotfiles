@@ -1,0 +1,19 @@
+/* Main view background */
+.thunar .standard-view .view {
+    background-color: #1b1c1e; /* Replace with your desired color */
+}
+
+/* Sidebar background */
+.thunar .sidebar .view {
+    background-color: #1b1c1e; /* Replace with your desired color */
+}
+
+/* Toolbar background */
+.thunar toolbar {
+    background-color: #1b1c1e; /* Replace with your desired color */
+}
+
+/* Status bar background */
+.thunar statusbar {
+    background-color: #1b1c1e; /* Replace with your desired color */
+}
