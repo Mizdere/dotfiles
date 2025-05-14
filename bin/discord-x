@@ -1,0 +1,2 @@
+#!/bin/bash
+DISCORD_DISABLE_WAYLAND=1 exec /usr/bin/discord "$@"
