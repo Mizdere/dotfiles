@@ -1,0 +1,93 @@
+
+* {
+  font-family: "Misc Fixed", monospace;
+  font-size: 12px;
+  font-weight: 400;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  margin: 0;
+}
+
+window#waybar {
+  background: rgba(0, 0, 0, 0.94);
+  border-bottom: 1px solid rgba(230, 224, 208, 0.18);
+  color: rgba(238, 234, 222, 0.88);
+}
+
+/* WORKSPACES */
+#workspaces button {
+  padding: 0 8px;
+  color: rgba(238, 234, 222, 0.42);
+  border-bottom: 2px solid transparent;
+  transition: all 0.15s;
+}
+
+#workspaces button.active {
+  color: rgba(238, 234, 222, 0.92);
+  border-bottom: 2px solid rgba(238, 234, 222, 0.82);
+}
+
+#workspaces button:hover {
+  color: rgba(238, 234, 222, 0.78);
+  background: rgba(238, 234, 222, 0.06);
+}
+
+/* WINDOW TITLE */
+#window {
+  color: rgba(238, 234, 222, 0.56);
+  min-width: 90px;
+  padding: 0 12px;
+  letter-spacing: 1px;
+}
+
+#window label {
+  min-width: 90px;
+}
+
+/* CLOCK CENTRE */
+#custom-clock {
+  padding: 0 12px;
+  color: rgba(238, 234, 222, 0.92);
+  letter-spacing: 2px;
+}
+
+/* MODULES DROITE */
+#custom-cpu,
+#custom-ram,
+#custom-gpu,
+#custom-network,
+#pulseaudio,
+#custom-battery,
+#custom-power {
+  padding: 0 10px;
+  color: rgba(238, 234, 222, 0.82);
+  border-left: 1px solid rgba(230, 224, 208, 0.12);
+  letter-spacing: 0.6px;
+}
+
+#custom-cpu,
+#custom-ram,
+#custom-gpu,
+#custom-network,
+#pulseaudio {
+  color: rgba(238, 234, 222, 0.82);
+}
+
+#custom-cpu,
+#custom-ram,
+#custom-gpu,
+#custom-network,
+#pulseaudio,
+#custom-battery {
+  font-size: 11px;
+}
+
+#custom-power {
+  padding: 0 14px;
+}
+
+#custom-power:hover {
+  color: rgba(238, 234, 222, 0.96);
+  background: rgba(200, 96, 96, 0.08);
+}

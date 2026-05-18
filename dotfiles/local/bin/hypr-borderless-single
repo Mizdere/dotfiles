@@ -1,0 +1,289 @@
+#!/usr/bin/env python3
+
+import json
+import os
+import re
+import signal
+import socket
+import subprocess
+import time
+
+
+HYPRCTL = os.environ.get("HYPRCTL", "hyprctl")
+
+
+def _hyprctl_json(*args):
+    return json.loads(subprocess.check_output([HYPRCTL, "-j", *args], text=True))
+
+
+def _best_signature() -> str:
+    sig = os.environ.get("HYPRLAND_INSTANCE_SIGNATURE")
+    if sig:
+        return sig
+    instances = _hyprctl_json("instances")
+    if not instances:
+        raise RuntimeError("No Hyprland instances found")
+    return instances[0]["instance"]
+
+
+def _socket2_path(sig: str) -> str:
+    # Newer setups use XDG_RUNTIME_DIR, older ones use /tmp.
+    xdg = os.environ.get("XDG_RUNTIME_DIR")
+    if xdg:
+        p = os.path.join(xdg, "hypr", sig, ".socket2.sock")
+        if os.path.exists(p):
+            return p
+    return f"/tmp/hypr/{sig}/.socket2.sock"
+
+
+def _get_default_border_size() -> int:
+    # Capture the border size as defined by config at startup.
+    opt = _hyprctl_json("getoption", "general:border_size")
+    return int(opt.get("int", 0))
+
+
+def _get_border_colors():
+    active = _hyprctl_json("getoption", "general:col.active_border").get("custom", "")
+    inactive = _hyprctl_json("getoption", "general:col.inactive_border").get("custom", "")
+    return (active, inactive)
+
+
+def _defaults_from_config():
+    """Best-effort read defaults from ~/.config/hypr/hyprland.conf.
+
+    This avoids the "captured transparent defaults" problem if the script is
+    restarted while borders are currently hidden.
+    """
+    path = os.path.expanduser("~/.config/hypr/hyprland.conf")
+    try:
+        with open(path, "r", encoding="utf-8", errors="ignore") as f:
+            lines = f.readlines()
+    except OSError:
+        return {}
+
+    out = {}
+    for line in lines:
+        s = line.strip()
+        if not s or s.startswith("#"):
+            continue
+
+        m = re.match(r"^border_size\s*=\s*(\d+)\s*$", s)
+        if m:
+            out["border_size"] = int(m.group(1))
+            continue
+
+        m = re.match(r"^col\.active_border\s*=\s*(.+?)\s*$", s)
+        if m:
+            out["active_border"] = m.group(1).strip()
+            continue
+
+        m = re.match(r"^col\.inactive_border\s*=\s*(.+?)\s*$", s)
+        if m:
+            out["inactive_border"] = m.group(1).strip()
+            continue
+
+    return out
+
+
+def _is_transparentish(s: str) -> bool:
+    # hyprctl tends to normalize fully-transparent colors to "0".
+    toks = [t for t in s.split() if t]
+    if not toks:
+        return False
+    # Drop angle if present.
+    if toks and toks[-1].endswith("deg"):
+        toks = toks[:-1]
+    return all(t == "0" or t == "00000000" for t in toks)
+
+
+def _transparent_like(original: str) -> str:
+    # Keep the same gradient shape / angle to avoid layout jitter.
+    # Examples of original values:
+    # - "eeb2b6c6 eeb2b6c6 45deg"
+    # - "aa595959 0deg"
+    toks = [t for t in original.split() if t]
+    if not toks:
+        return "00000000"
+
+    angle = toks[-1] if toks[-1].endswith("deg") else None
+    colors = toks[:-1] if angle else toks
+    if not colors:
+        colors = ["00000000"]
+    transparent = "00000000"
+    out = [transparent for _ in colors]
+    if angle:
+        out.append(angle)
+    return " ".join(out)
+
+
+def _active_workspace_id() -> int:
+    ws = _hyprctl_json("activeworkspace")
+    return int(ws["id"])
+
+
+def _tiled_window_count(workspace_id: int) -> int:
+    clients = _hyprctl_json("clients")
+    n = 0
+    for c in clients:
+        ws = c.get("workspace") or {}
+        if int(ws.get("id", -1)) != workspace_id:
+            continue
+        if not c.get("mapped", True) or c.get("hidden", False):
+            continue
+        # Ignore floating overlays; only count tiled windows.
+        if c.get("floating", False):
+            continue
+        n += 1
+    return n
+
+
+def _set_border_colors(active: str, inactive: str) -> None:
+    subprocess.run(
+        [HYPRCTL, "keyword", "general:col.active_border", active],
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+        check=False,
+    )
+    subprocess.run(
+        [HYPRCTL, "keyword", "general:col.inactive_border", inactive],
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+        check=False,
+    )
+
+
+def _current_border_colors():
+    a, i = _get_border_colors()
+    return (a.strip(), i.strip())
+
+
+def _apply(state: dict) -> None:
+    # NOTE: despite the name, this helper is also used as a general
+    # "borderless" enforcer: keep border_size as configured but make border
+    # colors fully transparent so wallpaper/theme changes can't bring borders
+    # back.
+
+    # Track the most recent non-transparent colors as the "defaults" to restore to.
+    cur_active, cur_inactive = _current_border_colors()
+    if not _is_transparentish(cur_active) and not _is_transparentish(cur_inactive):
+        state["default_active"] = cur_active
+        state["default_inactive"] = cur_inactive
+
+    default_active = state.get("default_active", "")
+    default_inactive = state.get("default_inactive", "")
+    if not default_active or not default_inactive:
+        default_active, default_inactive = _get_border_colors()
+        state["default_active"] = default_active
+        state["default_inactive"] = default_inactive
+
+    target_active = _transparent_like(default_active)
+    target_inactive = _transparent_like(default_inactive)
+
+    if cur_active != target_active or cur_inactive != target_inactive:
+        _set_border_colors(target_active, target_inactive)
+
+
+def main() -> int:
+    # Keep border_size constant to avoid the workspace-switch "wobble".
+    # We'll hide borders by making their colors transparent.
+    cfg = _defaults_from_config()
+    _ = int(cfg.get("border_size", _get_default_border_size()))
+    default_active = cfg.get("active_border")
+    default_inactive = cfg.get("inactive_border")
+    if not default_active or not default_inactive:
+        default_active, default_inactive = _get_border_colors()
+    state = {
+        "default_active": default_active.strip(),
+        "default_inactive": default_inactive.strip(),
+    }
+
+    # Apply once at startup.
+    try:
+        _apply(state)
+    except Exception:
+        pass
+
+    sig = _best_signature()
+    sock_path = _socket2_path(sig)
+
+    quitting = False
+    force_apply = False
+
+    def _quit(*_args):
+        nonlocal quitting
+        quitting = True
+
+    def _poke(*_args):
+        nonlocal force_apply
+        force_apply = True
+
+    for s in (signal.SIGINT, signal.SIGTERM, signal.SIGHUP):
+        signal.signal(s, _quit)
+    signal.signal(signal.SIGUSR1, _poke)
+
+    last_apply = 0.0
+    throttle_s = 0.05
+    # If some other script changes border colors (eg. pywal hooks) we might not
+    # get a socket event. Periodically re-apply to keep the single-window state.
+    poll_s = 0.75
+    last_poll = 0.0
+
+    while not quitting:
+        try:
+            with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as sock:
+                sock.connect(sock_path)
+                sock.settimeout(0.5)
+                buf = b""
+                while not quitting:
+                    try:
+                        chunk = sock.recv(4096)
+                    except socket.timeout:
+                        now = time.monotonic()
+                        if force_apply:
+                            force_apply = False
+                            last_poll = now
+                            if now - last_apply >= throttle_s:
+                                last_apply = now
+                                try:
+                                    _apply(state)
+                                except Exception:
+                                    pass
+                        if now - last_poll >= poll_s:
+                            last_poll = now
+                            if now - last_apply >= throttle_s:
+                                last_apply = now
+                                try:
+                                    _apply(state)
+                                except Exception:
+                                    pass
+                        continue
+                    if not chunk:
+                        break
+                    buf += chunk
+
+                    while b"\n" in buf:
+                        _line, buf = buf.split(b"\n", 1)
+                        now = time.monotonic()
+                        if now - last_apply >= throttle_s:
+                            last_apply = now
+                            try:
+                                _apply(state)
+                            except Exception:
+                                pass
+
+        except (FileNotFoundError, ConnectionError):
+            time.sleep(0.2)
+        except Exception:
+            time.sleep(0.2)
+
+    # Best-effort restore.
+    try:
+        _set_border_colors(state.get("default_active", default_active), state.get("default_inactive", default_inactive))
+    except Exception:
+        pass
+
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

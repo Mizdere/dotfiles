@@ -1,0 +1,32 @@
+#!/bin/sh
+# Start Hyprland the recommended way from a TTY login
+
+export XDG_SESSION_TYPE=wayland
+export XDG_CURRENT_DESKTOP=Hyprland
+export XDG_SESSION_DESKTOP=Hyprland
+
+# Prefer the iGPU for the compositor while keeping NVIDIA available for PRIME offload.
+# Avoid /dev/dri/by-path here: Aquamarine splits AQ_DRM_DEVICES on ':' and PCI paths contain colons.
+export AQ_DRM_DEVICES=/dev/dri/card1
+export AQ_NO_MODIFIERS=1
+export AQ_NO_ATOMIC=1
+export __EGL_VENDOR_LIBRARY_FILENAMES=/usr/share/glvnd/egl_vendor.d/50_mesa.json
+
+LOG_FILE="$HOME/.cache/start-hyprland.log"
+mkdir -p "$HOME/.cache"
+{
+  printf '%s start-hyprland wrapper\n' "$(date '+%F %T')"
+  printf 'AQ_DRM_DEVICES=%s\n' "${AQ_DRM_DEVICES:-}"
+  printf 'AQ_NO_MODIFIERS=%s\n' "${AQ_NO_MODIFIERS:-}"
+  printf 'AQ_NO_ATOMIC=%s\n' "${AQ_NO_ATOMIC:-}"
+  printf '__EGL_VENDOR_LIBRARY_FILENAMES=%s\n' "${__EGL_VENDOR_LIBRARY_FILENAMES:-}"
+  printf 'DBUS_SESSION_BUS_ADDRESS=%s\n' "${DBUS_SESSION_BUS_ADDRESS:-}"
+  printf 'amd-igpu-card=%s\n' "$(readlink -f /dev/dri/card1 2>/dev/null || printf missing)"
+} >> "$LOG_FILE" 2>&1
+
+# Use Hyprland's packaged watchdog launcher after setting the environment.
+if [ -z "${DBUS_SESSION_BUS_ADDRESS:-}" ] && command -v dbus-run-session >/dev/null 2>&1; then
+  exec dbus-run-session /usr/bin/start-hyprland
+else
+  exec /usr/bin/start-hyprland
+fi

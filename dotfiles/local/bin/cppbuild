@@ -1,0 +1,145 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# cppbuild: build C++ projects (single-file OR multi-file src/ + include/)
+# Output: build/app
+# Usage:
+#   cppbuild                # builds current project (auto-detect)
+#   cppbuild run            # build + run
+#   cppbuild clean          # remove build dir
+#   cppbuild run -- 1 2 3   # pass args to app (after --)
+#
+# Behavior:
+# - If CMakeLists.txt exists -> uses CMake in ./build
+# - Else if ./src exists -> compiles all .cpp under ./src with -I./include -I./src
+# - Else -> compiles the current directory's single .cpp if exactly one exists
+
+PROJECT_ROOT="$(pwd)"
+BUILD_DIR="${PROJECT_ROOT}/build"
+APP="${BUILD_DIR}/app"
+
+MODE="${1:-}"
+shift || true
+
+# Split args for running app: everything after `--` goes to the app
+APP_ARGS=()
+if [[ "${MODE:-}" == "run" ]]; then
+  while [[ $# -gt 0 ]]; do
+    if [[ "$1" == "--" ]]; then
+      shift
+      APP_ARGS=("$@")
+      break
+    fi
+    shift
+  done
+fi
+
+clean() {
+  rm -rf "${BUILD_DIR}"
+  echo "Cleaned: ${BUILD_DIR}"
+}
+
+build_cmake() {
+  mkdir -p "${BUILD_DIR}"
+  cmake -S "${PROJECT_ROOT}" -B "${BUILD_DIR}"
+  cmake --build "${BUILD_DIR}" -j
+  # If your CMake target name isn't "app", you can still run whatever CMake produced.
+  # We'll prefer build/app if it exists, otherwise just print build dir contents.
+  if [[ ! -x "${APP}" ]]; then
+    echo "CMake build finished, but ${APP} not found."
+    echo "Look in: ${BUILD_DIR}"
+  fi
+}
+
+build_src_tree() {
+  mkdir -p "${BUILD_DIR}"
+
+  mapfile -t SOURCES < <(find "${PROJECT_ROOT}/src" -type f -name '*.cpp' | sort)
+  if [[ ${#SOURCES[@]} -eq 0 ]]; then
+    echo "No .cpp files found in ./src"
+    exit 1
+  fi
+
+  # Include paths: ./include for headers like "math.hpp", and ./src for local includes.
+  INCLUDES=()
+  [[ -d "${PROJECT_ROOT}/include" ]] && INCLUDES+=("-I" "${PROJECT_ROOT}/include")
+  INCLUDES+=("-I" "${PROJECT_ROOT}/src")
+
+  # Reasonable defaults (adjust if you want)
+  CXX="${CXX:-g++}"
+  CXXFLAGS=(
+    -std=c++20
+    -O0
+    -g
+    -Wall
+    -Wextra
+    -Wpedantic
+  )
+
+  echo "Compiling:"
+  printf '  %s\n' "${SOURCES[@]}"
+
+  "${CXX}" "${CXXFLAGS[@]}" "${INCLUDES[@]}" \
+    "${SOURCES[@]}" \
+    -o "${APP}"
+
+  echo "Built: ${APP}"
+}
+
+build_single_file() {
+  mkdir -p "${BUILD_DIR}"
+
+  mapfile -t CPP_FILES < <(find "${PROJECT_ROOT}" -maxdepth 1 -type f -name '*.cpp' | sort)
+  if [[ ${#CPP_FILES[@]} -ne 1 ]]; then
+    echo "Single-file mode needs exactly one .cpp in project root."
+    echo "Found:"
+    printf '  %s\n' "${CPP_FILES[@]}"
+    exit 1
+  fi
+
+  CXX="${CXX:-g++}"
+  CXXFLAGS=(-std=c++20 -O0 -g -Wall -Wextra -Wpedantic)
+
+  "${CXX}" "${CXXFLAGS[@]}" "${CPP_FILES[0]}" -o "${APP}"
+  echo "Built: ${APP}"
+}
+
+run_app() {
+  if [[ -x "${APP}" ]]; then
+    "${APP}" "${APP_ARGS[@]}"
+  else
+    echo "No executable at ${APP}"
+    exit 1
+  fi
+}
+
+# ---- main ----
+case "${MODE}" in
+  clean)
+    clean
+    exit 0
+    ;;
+  run)
+    # build first, then run
+    ;;
+  "" )
+    # build only
+    ;;
+  *)
+    echo "Unknown command: ${MODE}"
+    echo "Usage: cppbuild [run|clean] [-- args...]"
+    exit 1
+    ;;
+esac
+
+if [[ -f "${PROJECT_ROOT}/CMakeLists.txt" ]]; then
+  build_cmake
+elif [[ -d "${PROJECT_ROOT}/src" ]]; then
+  build_src_tree
+else
+  build_single_file
+fi
+
+if [[ "${MODE}" == "run" ]]; then
+  run_app
+fi

@@ -1,0 +1,14 @@
+.nemo-window .view,
+.nemo-window treeview,
+.nemo-window toolbar,
+.nemo-window statusbar,
+.nemo-window menubar {
+    background-color: #1e1e2e;
+    color: #e6e3cd;
+}
+.nemo-window .view:selected,
+.nemo-window treeview:selected {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 0px;
+    padding: 2px;
+}

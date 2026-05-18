@@ -1,0 +1,74 @@
+--- a/src/ui/header.rs
++++ b/src/ui/header.rs
+@@ -1,12 +1,8 @@
+ use gtk4::prelude::*;
+ use gtk4::{self as gtk, Orientation};
+-use gtk4::gdk;
+-use gdk_pixbuf::PixbufLoader;
+ use std::cell::RefCell;
+ use std::rc::Rc;
+ 
+-const ORBIT_LOGO: &[u8] = include_bytes!("../../assets/OrbitLogo.png");
+-
+ #[derive(Clone)]
+ pub struct Header {
+     container: gtk::Box,
+@@ -31,30 +27,8 @@ impl Header {
+         let title_row = gtk::Box::builder()
+             .orientation(Orientation::Horizontal)
+             .spacing(4)
+-            .build();
+-        
+-        let loader = PixbufLoader::new();
+-        loader.write(ORBIT_LOGO).expect("Failed to load embedded Orbit logo");
+-        loader.close().expect("Failed to close logo loader");
+-        let pixbuf = loader.pixbuf().expect("Failed to get logo pixbuf");
+-        let logo_texture = gdk::Texture::for_pixbuf(&pixbuf);
+-
+-        let orbit_icon = gtk::Image::builder()
+-            .paintable(&logo_texture)
+-            .pixel_size(64)
+-            .build();
+-
+-        let logo_container = gtk::Box::builder()
+-            .css_classes(["orbit-logo-container"])
+-            .valign(gtk::Align::Center)
+-            .build();
+-        logo_container.append(&orbit_icon);
+-        
+-        let title = gtk::Label::builder()
+-            .label("Orbit")
+-            .css_classes(["orbit-title"])
++            .halign(gtk::Align::End)
+             .hexpand(true)
+-            .halign(gtk::Align::Start)
+             .build();
+         
+         let power_switch = gtk::Switch::builder()
+@@ -71,6 +45,7 @@ impl Header {
+         let power_box = gtk::Box::builder()
+             .orientation(Orientation::Horizontal)
+             .spacing(8)
++            .halign(gtk::Align::End)
+             .valign(gtk::Align::Center)
+             .build();
+         power_box.append(&power_label);
+@@ -83,8 +58,6 @@ impl Header {
+             .valign(gtk::Align::Center)
+             .build();
+         
+-        title_row.append(&logo_container);
+-        title_row.append(&title);
+         title_row.append(&power_box);
+         title_row.append(&wired_button);
+         
+@@ -116,8 +89,8 @@ impl Header {
+         tab_bar.append(&bluetooth_tab);
+         tab_bar.append(&vpn_tab);
+         
+-        container.append(&title_row);
+         container.append(&tab_bar);
++        container.append(&title_row);
+         
+         Self {
+             container,

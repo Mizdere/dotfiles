@@ -1,0 +1,3 @@
+# Format: name|target|url
+# URL may be blank when no stable upstream direct download is known.
+alcom|~/.local/bin/alcom.AppImage|

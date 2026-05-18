@@ -1,0 +1,24 @@
+# Generated caches
+__pycache__/
+*.pyc
+.cache/
+
+# Secrets and browser/app state that should not be versioned
+.ssh/
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm
+logins.json
+key4.db
+cookies.sqlite
+pulse/cookie
+
+# Large/local binaries are tracked by manifests instead
+*.AppImage
+dotfiles/local/bin/orbit
+
+# Build output
+target/
+src/
+pkg/
+*.pkg.tar.zst

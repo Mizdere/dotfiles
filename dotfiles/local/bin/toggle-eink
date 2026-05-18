@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Shader basename (no .glsl)
+SHADER="grayscale"
+
+# If grayscale is currently active -> turn shaders off
+# Else -> turn grayscale on
+if hyprshade current 2>/dev/null | grep -qi "$SHADER"; then
+  hyprshade off
+else
+  hyprshade on "$SHADER"
+fi

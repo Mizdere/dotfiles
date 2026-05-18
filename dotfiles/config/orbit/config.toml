@@ -1,0 +1,11 @@
+# Orbit dropdown placement for the Waybar network icons.
+position = "top-right"
+margin_top = 28
+margin_bottom = 10
+margin_left = 10
+margin_right = 10
+
+window_transition = "slidedown"
+window_transition_duration = 200
+stack_transition = "slidehorizontal"
+stack_transition_duration = 200

@@ -1,0 +1,81 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Usage:
+#   mkcpp <project_name>
+# Creates:
+#   ~/CppProjects/<project_name>/{src,include,build}
+#   CMakeLists.txt that builds src/*.cpp into ./build/app
+
+if [[ $# -ne 1 ]]; then
+  echo "Usage: mkcpp <project_name>" >&2
+  exit 1
+fi
+
+proj="$1"
+base="$HOME/CppProjects/$proj"
+
+mkdir -p "$base"/{src,include}
+cd "$base"
+
+# Starter files (only if missing)
+if [[ ! -f src/main.cpp ]]; then
+  cat > src/main.cpp <<'CPP'
+#include <iostream>
+#include "math.hpp"
+
+int main() {
+  std::cout << "app: starting\n";
+  std::cout << "7+8=" << add(7,8) << "\n";
+  return 0;
+}
+CPP
+fi
+
+if [[ ! -f include/math.hpp ]]; then
+  cat > include/math.hpp <<'CPP'
+#pragma once
+int add(int a, int b);
+CPP
+fi
+
+if [[ ! -f src/math.cpp ]]; then
+  cat > src/math.cpp <<'CPP'
+#include "math.hpp"
+
+int add(int a, int b) {
+  int result = a + b; // breakpoint here
+  return result;
+}
+CPP
+fi
+
+# Professional CMakeLists.txt
+cat > CMakeLists.txt <<'CMAKE'
+cmake_minimum_required(VERSION 3.16)
+project(CppProject LANGUAGES CXX)
+
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+add_executable(app
+  src/main.cpp
+  src/math.cpp
+)
+
+target_include_directories(app PRIVATE include)
+CMAKE
+
+# .gitignore (professional)
+cat > .gitignore <<'GIT'
+build/
+*.o
+*.out
+*.exe
+compile_commands.json
+GIT
+
+echo "Created: $base"
+echo "Next:"
+echo "  cd \"$base\" && nvim ."
+

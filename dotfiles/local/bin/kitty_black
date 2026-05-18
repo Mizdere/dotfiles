@@ -1,0 +1,2 @@
+#!/bin/bash
+kitty --config ~/.config/kitty/kitty-black.conf "$@"

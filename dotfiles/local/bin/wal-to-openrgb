@@ -1,0 +1,76 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+COLOR_FILE="${HOME}/.cache/wal/colors"
+STATE_FILE="${HOME}/.cache/wal/keyboard_color"
+FORCE="${1:-}"
+
+if [[ ! -f "$COLOR_FILE" ]]; then
+  echo "pywal colors file not found: $COLOR_FILE"
+  exit 1
+fi
+
+score_color() {
+  local hex="$1"
+  local r=$((16#${hex:0:2}))
+  local g=$((16#${hex:2:2}))
+  local b=$((16#${hex:4:2}))
+  local max=$r min=$r
+
+  (( g > max )) && max=$g
+  (( b > max )) && max=$b
+  (( g < min )) && min=$g
+  (( b < min )) && min=$b
+
+  local brightness=$((r + g + b))
+  local saturation=$((max - min))
+
+  # Prefer readable accents: not almost black, not near-white, with some color.
+  if (( brightness < 120 || brightness > 650 || saturation < 24 )); then
+    echo 0
+    return
+  fi
+
+  echo $((saturation * 3 + brightness / 8))
+}
+
+pick_color() {
+  local best_hex=""
+  local best_score=0
+  local line hex score
+
+  for line in 2 3 4 5 6 7 8; do
+    hex="$(sed -n "${line}p" "$COLOR_FILE" | tr -d '# \n\r')"
+    [[ "$hex" =~ ^[0-9A-Fa-f]{6}$ ]] || continue
+
+    score="$(score_color "$hex")"
+    if (( score > best_score )); then
+      best_score="$score"
+      best_hex="$hex"
+    fi
+  done
+
+  if [[ -n "$best_hex" ]]; then
+    echo "$best_hex"
+    return 0
+  fi
+
+  sed -n '6p' "$COLOR_FILE" | tr -d '# \n\r'
+}
+
+HEX="$(pick_color)"
+if [[ ! "$HEX" =~ ^[0-9A-Fa-f]{6}$ ]]; then
+  echo "Failed to pick a valid color from $COLOR_FILE"
+  exit 1
+fi
+
+mkdir -p "$(dirname "$STATE_FILE")"
+printf '%s\n' "$HEX" > "$STATE_FILE"
+
+if [[ "$FORCE" != "--force" ]] && asusctl leds get 2>/dev/null | grep -qi 'Off'; then
+  echo "Keyboard brightness is off; cached color #$HEX without enabling lighting"
+  exit 0
+fi
+
+echo "Applying keyboard color: #$HEX"
+asusctl aura effect static -c "$HEX"

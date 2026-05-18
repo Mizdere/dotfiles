@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+export KDE_COLOR_SCHEME_PATH="$HOME/.local/share/color-schemes/WaybarWarmDark.colors"
+exec /usr/bin/dolphin --new-window -stylesheet "$HOME/.config/dolphin-waybar-dark.qss" "$@"

@@ -1,0 +1,8 @@
+hyprshade
+orbit-wifi
+papirus-folders-catppuccin-git
+paru
+paru-debug
+quickshell-git
+tamzen-font
+wallust

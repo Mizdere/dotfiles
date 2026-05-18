@@ -1,0 +1,205 @@
+/* OSD-style Orbit dropdown overrides. */
+* {
+    border-radius: 14px;
+    box-shadow: none;
+}
+
+.orbit-panel {
+    background-color: rgba(10, 10, 10, 0.54);
+    background-image: none;
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 24px;
+    box-shadow: 0 16px 44px rgba(0, 0, 0, 0.24);
+    padding: 14px 18px;
+}
+
+window,
+.background {
+    background-color: transparent;
+    border-radius: 24px;
+}
+
+.orbit-header {
+    background-color: rgba(0, 0, 0, 0.46);
+    background-image: none;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 18px;
+    margin: 0 0 10px 0;
+    padding: 4px 6px 6px 6px;
+}
+
+.orbit-logo-container {
+    opacity: 0;
+    margin: 0;
+    padding: 0;
+    min-width: 0;
+    min-height: 0;
+}
+
+.orbit-logo-container image,
+.orbit-logo-container picture {
+    opacity: 0;
+    margin: 0;
+    padding: 0;
+    min-width: 0;
+    min-height: 0;
+}
+
+.orbit-title {
+    opacity: 0;
+    font-size: 0;
+    margin: 0;
+    padding: 0;
+}
+
+.orbit-tab-bar,
+.orbit-search-container,
+.orbit-saved-list-container {
+    background: rgba(0, 0, 0, 0.46);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 16px;
+    padding: 2px;
+}
+
+.orbit-tab {
+    border-radius: 999px;
+    font-size: 10px;
+    min-height: 20px;
+    min-width: 0;
+    padding: 3px 8px;
+    color: rgba(255, 255, 255, 0.78);
+}
+
+.orbit-tab:hover,
+.orbit-tab.active {
+    border-radius: 999px;
+    box-shadow: none;
+}
+
+.orbit-tab.active {
+    background: rgba(255, 255, 255, 0.82);
+    color: rgba(0, 0, 0, 0.88);
+}
+
+.orbit-network-row,
+.orbit-device-row,
+.orbit-saved-network-row,
+.orbit-wired-device-row,
+.orbit-dns-header {
+    background-color: rgba(0, 0, 0, 0.46);
+    background-image: none;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 18px;
+    box-shadow: none;
+    margin: 3px 4px;
+    padding: 7px 9px;
+}
+
+.orbit-network-row:hover,
+.orbit-device-row:hover,
+.orbit-saved-network-row:hover,
+.orbit-dns-header:hover {
+    background-color: rgba(0, 0, 0, 0.62);
+    border-color: rgba(255, 255, 255, 0.24);
+    box-shadow: none;
+}
+
+.orbit-network-row.connected,
+.orbit-device-row.connected,
+.orbit-saved-network-row.active,
+.orbit-network-row.connected:hover,
+.orbit-device-row.connected:hover,
+.orbit-saved-network-row.active:hover {
+    background: rgba(0, 0, 0, 0.68);
+    border-color: rgba(255, 255, 255, 0.24);
+    box-shadow: none;
+}
+
+.orbit-button,
+.orbit-button:hover,
+.orbit-button.primary,
+.orbit-button.primary:hover,
+.orbit-button.destructive,
+.orbit-button.destructive:hover,
+entry,
+password-entry {
+    border-radius: 999px;
+    box-shadow: none;
+    min-height: 22px;
+}
+
+.orbit-button,
+.orbit-button:hover,
+.orbit-button.primary:hover,
+.orbit-button.destructive:hover {
+    font-size: 10px;
+    padding: 6px 10px;
+}
+
+entry,
+password-entry {
+    padding: 6px 9px;
+}
+
+.orbit-details-overlay,
+.orbit-password-overlay,
+.orbit-error-overlay,
+.orbit-wired-overlay {
+    background-color: rgba(10, 10, 10, 0.54);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 22px;
+    box-shadow: 0 16px 44px rgba(0, 0, 0, 0.24);
+    margin: 12px;
+    padding: 14px;
+}
+
+.orbit-footer {
+    background-color: rgba(0, 0, 0, 0.46);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 18px;
+    margin: 8px 0 2px 0;
+    padding: 13px 16px 14px 16px;
+}
+
+.orbit-ssid {
+    font-size: 12px;
+    padding: 1px 0;
+}
+
+.orbit-status,
+.orbit-detail-value {
+    font-size: 10px;
+}
+
+.orbit-detail-label,
+.orbit-section-header {
+    font-size: 9px;
+}
+
+.orbit-section-header {
+    color: rgba(255, 255, 255, 0.72);
+    font-weight: 700;
+    letter-spacing: 0.10em;
+    margin: 6px 0 3px 0;
+    padding: 8px 8px 4px 8px;
+}
+
+.orbit-icon-container,
+.orbit-toggle-switch,
+.orbit-toggle-switch slider,
+.orbit-signal-bar-active,
+.orbit-signal-bar-active-accent,
+.orbit-signal-bar-inactive {
+    border-radius: 999px;
+}
+
+.orbit-toggle-switch {
+    min-width: 34px;
+    min-height: 18px;
+}
+
+.orbit-toggle-switch slider {
+    min-width: 12px;
+    min-height: 12px;
+    margin: 3px;
+}

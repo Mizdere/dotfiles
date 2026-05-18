@@ -1,0 +1,31 @@
+{
+  "colors": {
+    "source": "wal"
+  },
+  "display": {
+    "separator": " "
+  },
+  "modules": [
+    "title",
+    "os",
+    "kernel",
+    "uptime",
+    "packages",
+    "shell",
+    "terminal",
+    "cpu",
+    { "type": "gpu", "hideType": "integrated" },
+    "memory",
+    "disk",
+    "localIp",
+    "colors"
+  ],
+  "logo": {
+    "type": "kitty-direct",
+    "source": "~/Pictures/anime/fastfetch.png",
+    "width": 40,
+    "padding": {
+      "right": 1
+    }
+  }
+}

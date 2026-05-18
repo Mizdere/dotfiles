@@ -1,0 +1,3 @@
+set open-first-page false
+set continuous-hist-save true
+set database sqlite

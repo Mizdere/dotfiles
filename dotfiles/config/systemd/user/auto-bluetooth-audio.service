@@ -1,0 +1,12 @@
+[Unit]
+Description=Auto-switch audio to Bluetooth sinks
+After=pipewire-pulse.service wireplumber.service bluetooth.service
+Wants=pipewire-pulse.service wireplumber.service
+
+[Service]
+ExecStart=%h/.config/waybar/scripts/auto_bluetooth_audio.sh
+Restart=always
+RestartSec=2
+
+[Install]
+WantedBy=default.target

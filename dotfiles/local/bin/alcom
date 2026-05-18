@@ -1,0 +1,3 @@
+#!/bin/sh
+export LD_PRELOAD="/usr/lib/libwayland-client.so${LD_PRELOAD:+:$LD_PRELOAD}"
+exec "$HOME/.local/bin/alcom.AppImage" "$@"

@@ -1,0 +1,3 @@
+#!/bin/sh
+printf '%s %s\n' "$(date '+%F %T')" "$*" >> "$HOME/.cache/imv-open.log"
+exec /usr/bin/imv-wayland "$@"

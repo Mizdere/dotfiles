@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+set -e
+
+# cycles: power-saver -> balanced -> performance -> power-saver
+current="$(powerprofilesctl get 2>/dev/null || true)"
+
+case "$current" in
+  power-saver) next="balanced" ;;
+  balanced)    next="performance" ;;
+  performance) next="power-saver" ;;
+  *)           next="balanced" ;;
+esac
+
+powerprofilesctl set "$next"
