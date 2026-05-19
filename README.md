@@ -6,13 +6,43 @@ This repository is intended for personal restoration, not as a generic public ri
 
 ## Showcase
 
-Current desktop previews are stored in `docs/showcase/`.
+Current desktop previews are stored in `docs/showcase/`. GitHub README files do not support JavaScript carousels, so this uses a compact horizontal thumbnail strip. Click any preview to open it full-size, then use the browser/GitHub image viewer to move through them.
 
-![Desktop preview 1](docs/showcase/Screenshot_20260518_171138.png)
-![Desktop preview 2](docs/showcase/Screenshot_20260518_171237.png)
-![Desktop preview 3](docs/showcase/Screenshot_20260518_171327.png)
-![Desktop preview 4](docs/showcase/Screenshot_20260518_171641.png)
-![Desktop preview 5](docs/showcase/Screenshot_20260518_171712.png)
+| Preview | Preview | Preview | Preview | Preview |
+| --- | --- | --- | --- | --- |
+| [<img src="docs/showcase/Screenshot_20260518_171138.png" width="220" alt="Desktop preview 1">](docs/showcase/Screenshot_20260518_171138.png) | [<img src="docs/showcase/Screenshot_20260518_171237.png" width="220" alt="Desktop preview 2">](docs/showcase/Screenshot_20260518_171237.png) | [<img src="docs/showcase/Screenshot_20260518_171327.png" width="220" alt="Desktop preview 3">](docs/showcase/Screenshot_20260518_171327.png) | [<img src="docs/showcase/Screenshot_20260518_171641.png" width="220" alt="Desktop preview 4">](docs/showcase/Screenshot_20260518_171641.png) | [<img src="docs/showcase/Screenshot_20260518_171712.png" width="220" alt="Desktop preview 5">](docs/showcase/Screenshot_20260518_171712.png) |
+
+## Important Keybindings
+
+| Keybind | Action |
+| --- | --- |
+| `SUPER + Return` | Open Kitty terminal |
+| `SUPER + E` | Open Dolphin through the dark wrapper |
+| `SUPER + Space` | Open rofi launcher |
+| `SUPER + Q` | Close active window |
+| `SUPER + M` | Exit Hyprland |
+| `SUPER + V` | Toggle floating, resize, and center active window |
+| `SUPER + P` | Toggle pseudo tiling |
+| `SUPER + J` | Toggle split layout |
+| `SUPER + 1..0` | Switch workspaces 1 through 10 |
+| `SUPER + Shift + 1..0` | Move active window to workspace 1 through 10 |
+| `SUPER + Arrow keys` | Move active window by direction |
+| `SUPER + S` | Toggle special scratchpad workspace |
+| `SUPER + Shift + S` | Move active window to scratchpad workspace |
+| `SUPER + Mouse left drag` | Move window |
+| `SUPER + =` or `SUPER + Numpad +` | Change wallpaper |
+| `Print` | Full screenshot |
+| `XF86Launch1` | Frozen area screenshot |
+| `SUPER + XF86Launch1` | Frozen area screenshot and save |
+| `SUPER + F1` | Toggle output mute with OSD |
+| `XF86AudioMicMute` | Toggle microphone mute with OSD |
+| `XF86AudioLowerVolume` | Lower volume with OSD |
+| `XF86AudioRaiseVolume` | Raise volume with OSD |
+| `SUPER + F2` | Keyboard brightness down |
+| `SUPER + F3` | Keyboard brightness up |
+| `SUPER + F7` | Screen brightness down |
+| `SUPER + F8` | Screen brightness up |
+| `SUPER + I` | Toggle e-ink/grayscale mode |
 
 ## Restore
 
