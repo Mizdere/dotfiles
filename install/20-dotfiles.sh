@@ -19,9 +19,12 @@ for item in hypr waybar orbit systemd dunst rofi fuzzel gtk-3.0 gtk-4.0 qt6ct wa
   backup_path "$HOME/.config/$item"
 done
 
-mkdir -p "$HOME/.config" "$HOME/.local/bin" "$HOME/Pictures"
+mkdir -p "$HOME/.config" "$HOME/.local/bin" "$HOME/.local/share/applications" "$HOME/Pictures"
 rsync -a "$repo_root/dotfiles/config/" "$HOME/.config/"
 rsync -a "$repo_root/dotfiles/local/bin/" "$HOME/.local/bin/"
+if [[ -d "$repo_root/dotfiles/local/share/applications" ]]; then
+  rsync -a "$repo_root/dotfiles/local/share/applications/" "$HOME/.local/share/applications/"
+fi
 rsync -a "$repo_root/dotfiles/Pictures/" "$HOME/Pictures/"
 chmod +x "$HOME/.local/bin/"* 2>/dev/null || true
 

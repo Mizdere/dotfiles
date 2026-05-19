@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Neovim (Kitty)
+Comment=Launch Neovim inside Kitty
+Icon=kitty
+Terminal=false
+Exec=kitty --single-instance --override font_size=16 -e nvim
+Categories=Utility;TextEditor;

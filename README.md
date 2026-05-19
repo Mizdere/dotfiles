@@ -4,6 +4,16 @@ Private Arch/Hyprland system configuration for reproducing this laptop setup as 
 
 This repository is intended for personal restoration, not as a generic public rice. It captures the active Hyprland, Waybar, Orbit, OSD, audio, theme, package, and wallpaper setup while excluding browser secrets and volatile application state.
 
+## Showcase
+
+Current desktop previews are stored in `docs/showcase/`.
+
+![Desktop preview 1](docs/showcase/Screenshot_20260518_171138.png)
+![Desktop preview 2](docs/showcase/Screenshot_20260518_171237.png)
+![Desktop preview 3](docs/showcase/Screenshot_20260518_171327.png)
+![Desktop preview 4](docs/showcase/Screenshot_20260518_171641.png)
+![Desktop preview 5](docs/showcase/Screenshot_20260518_171712.png)
+
 ## Restore
 
 Clone and run:
@@ -26,6 +36,7 @@ If GitHub CLI is used later, replace `YOUR_GITHUB_USER` with the real account or
 - Patched Orbit source workflow and local binary install
 - User services for Orbit and Bluetooth audio handling
 - Local scripts under `~/.local/bin`
+- Local desktop launchers under `~/.local/share/applications`
 - GTK/Qt/rofi/fuzzel/dunst/wallust/fastfetch/mpv/zathura supporting configs
 - Wallpapers/images under `~/Pictures/anime` and `~/Pictures/Backgrounds`
 - Pacman/AUR package manifests
