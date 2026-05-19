@@ -18,6 +18,7 @@ firefox
 fuse2
 fuzzel
 git
+github-cli
 grim
 grub
 gwenview
