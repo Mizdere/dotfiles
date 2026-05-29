@@ -5,11 +5,11 @@
 }
 
 .orbit-panel {
-    background-color: rgba(10, 10, 10, 0.54);
+    background-color: #111111;
     background-image: none;
-    border: 1px solid rgba(255, 255, 255, 0.10);
+    border: 1px solid #2f2f2f;
     border-radius: 24px;
-    box-shadow: 0 16px 44px rgba(0, 0, 0, 0.24);
+    box-shadow: none;
     padding: 14px 18px;
 }
 
@@ -20,9 +20,9 @@ window,
 }
 
 .orbit-header {
-    background-color: rgba(0, 0, 0, 0.46);
+    background-color: #151515;
     background-image: none;
-    border: 1px solid rgba(255, 255, 255, 0.14);
+    border: 1px solid #383838;
     border-radius: 18px;
     margin: 0 0 10px 0;
     padding: 4px 6px 6px 6px;
@@ -55,8 +55,8 @@ window,
 .orbit-tab-bar,
 .orbit-search-container,
 .orbit-saved-list-container {
-    background: rgba(0, 0, 0, 0.46);
-    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: #151515;
+    border: 1px solid #383838;
     border-radius: 16px;
     padding: 2px;
 }
@@ -67,7 +67,7 @@ window,
     min-height: 20px;
     min-width: 0;
     padding: 3px 8px;
-    color: rgba(255, 255, 255, 0.78);
+    color: #d6d6d6;
 }
 
 .orbit-tab:hover,
@@ -77,8 +77,8 @@ window,
 }
 
 .orbit-tab.active {
-    background: rgba(255, 255, 255, 0.82);
-    color: rgba(0, 0, 0, 0.88);
+    background: #eeeeee;
+    color: #101010;
 }
 
 .orbit-network-row,
@@ -86,9 +86,9 @@ window,
 .orbit-saved-network-row,
 .orbit-wired-device-row,
 .orbit-dns-header {
-    background-color: rgba(0, 0, 0, 0.46);
+    background-color: #151515;
     background-image: none;
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    border: 1px solid #333333;
     border-radius: 18px;
     box-shadow: none;
     margin: 3px 4px;
@@ -99,8 +99,8 @@ window,
 .orbit-device-row:hover,
 .orbit-saved-network-row:hover,
 .orbit-dns-header:hover {
-    background-color: rgba(0, 0, 0, 0.62);
-    border-color: rgba(255, 255, 255, 0.24);
+    background-color: #202020;
+    border-color: #555555;
     box-shadow: none;
 }
 
@@ -110,8 +110,8 @@ window,
 .orbit-network-row.connected:hover,
 .orbit-device-row.connected:hover,
 .orbit-saved-network-row.active:hover {
-    background: rgba(0, 0, 0, 0.68);
-    border-color: rgba(255, 255, 255, 0.24);
+    background: #242424;
+    border-color: #555555;
     box-shadow: none;
 }
 
@@ -145,17 +145,17 @@ password-entry {
 .orbit-password-overlay,
 .orbit-error-overlay,
 .orbit-wired-overlay {
-    background-color: rgba(10, 10, 10, 0.54);
-    border: 1px solid rgba(255, 255, 255, 0.10);
+    background-color: #111111;
+    border: 1px solid #2f2f2f;
     border-radius: 22px;
-    box-shadow: 0 16px 44px rgba(0, 0, 0, 0.24);
+    box-shadow: none;
     margin: 12px;
     padding: 14px;
 }
 
 .orbit-footer {
-    background-color: rgba(0, 0, 0, 0.46);
-    border: 1px solid rgba(255, 255, 255, 0.14);
+    background-color: #151515;
+    border: 1px solid #383838;
     border-radius: 18px;
     margin: 8px 0 2px 0;
     padding: 13px 16px 14px 16px;
@@ -177,7 +177,7 @@ password-entry {
 }
 
 .orbit-section-header {
-    color: rgba(255, 255, 255, 0.72);
+    color: #cfcfcf;
     font-weight: 700;
     letter-spacing: 0.10em;
     margin: 6px 0 3px 0;

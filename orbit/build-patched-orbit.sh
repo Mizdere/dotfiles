@@ -18,6 +18,7 @@ if [[ ! -d "$src" ]]; then
 fi
 
 patch -d "$src" -p1 < "$repo_root/orbit/patch-header-layout.diff"
+patch -d "$src" -p1 < "$repo_root/orbit/patch-network-state.diff"
 cargo build --release --manifest-path "$src/Cargo.toml"
 install -Dm755 "$src/target/release/orbit" "$HOME/.local/bin/orbit"
 

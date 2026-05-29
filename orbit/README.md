@@ -7,6 +7,8 @@ Local changes are intentionally stored as a source patch instead of committing t
 - remove the Orbit logo/title from the header
 - move `WiFi / Bluetooth / VPN` tabs above the WiFi/Bluetooth toggle row
 - right-align the WiFi/Bluetooth toggle row
+- detect the active WiFi SSID from NetworkManager's active access point instead of the saved profile name
+- classify WPA2/WPA3 from the correct NetworkManager RSN key-management flags
 
 Build and install the patched binary:
 

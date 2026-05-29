@@ -8,7 +8,7 @@ import time
 from pathlib import Path
 
 
-BACKLIGHT = "amdgpu_bl1"
+PREFERRED_BACKLIGHTS = ("intel_backlight", "amdgpu_bl1", "nvidia_0")
 SCRIPT = Path(__file__).resolve()
 RUNTIME_DIR = Path(os.environ.get("XDG_RUNTIME_DIR", "/tmp"))
 STATE_PATH = RUNTIME_DIR / "hypr-osd-state.json"
@@ -17,6 +17,31 @@ START_LOCK = RUNTIME_DIR / "hypr-osd-start.lock"
 
 def run(*args):
     return subprocess.run(args, text=True, capture_output=True, check=False)
+
+
+def backlight_devices():
+    base = Path("/sys/class/backlight")
+    return sorted(path.name for path in base.iterdir()) if base.exists() else []
+
+
+def backlight_device():
+    preferred = os.environ.get("HYPR_OSD_BACKLIGHT")
+    available = set(backlight_devices())
+    if preferred and preferred in available:
+        return preferred
+    for name in PREFERRED_BACKLIGHTS:
+        if name in available:
+            return name
+    return sorted(available)[0] if available else ""
+
+
+def set_brightness_percent(value):
+    value = max(0, min(100, value))
+    device = backlight_device()
+    if not device:
+        run("brightnessctl", "set", f"{value}%")
+        return
+    run("brightnessctl", "-d", device, "set", f"{value}%")
 
 
 def volume_state():
@@ -36,7 +61,8 @@ def mic_state():
 
 
 def brightness_state():
-    out = run("brightnessctl", "-d", BACKLIGHT, "info").stdout
+    device = backlight_device()
+    out = run("brightnessctl", "-d", device, "info").stdout if device else run("brightnessctl", "info").stdout
     match = re.search(r"\((\d+)%\)", out)
     return max(0, min(100, int(match.group(1)))) if match else 0
 
@@ -118,12 +144,14 @@ def handle_control(kind, action):
         return
 
     if kind == "brightness":
+        current = brightness_state()
         if action == "up":
-            run("brightnessctl", "-d", BACKLIGHT, "set", "5%+")
+            value = current + 5
         elif action == "down":
-            run("brightnessctl", "-d", BACKLIGHT, "set", "5%-")
+            value = current - 5
         else:
             raise SystemExit("usage: osd_control.py brightness [up|down]")
+        set_brightness_percent(value)
         show_osd("brightness", brightness_state())
         return
 

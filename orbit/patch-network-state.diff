@@ -1,0 +1,63 @@
+--- a/src/dbus/network_manager.rs
++++ b/src/dbus/network_manager.rs
+@@ -272,7 +272,7 @@ impl NetworkManager {
+                     .and_then(|ov| u32::try_from(zbus::zvariant::Value::from(ov)).ok())
+                     .unwrap_or(0);
+                 
+-                let security = if rsn_flags & 0x100 != 0 {
++                let security = if rsn_flags & 0x400 != 0 || rsn_flags & 0x800 != 0 {
+                     SecurityType::WPA3
+                 } else if rsn_flags != 0 {
+                     SecurityType::WPA2
+@@ -336,6 +336,10 @@ impl NetworkManager {
+     }
+     
+     pub async fn get_active_ssid(&self) -> Option<String> {
++        if let Some(ssid) = self.get_active_wireless_ssid().await {
++            return Some(ssid);
++        }
++
+         let active_paths = self.get_active_connection_paths().await;
+         
+         for path in active_paths {
+@@ -399,6 +403,40 @@ impl NetworkManager {
+         None
+     }
+ 
++    async fn get_active_wireless_ssid(&self) -> Option<String> {
++        for device_path in self.get_wireless_devices().await.ok()? {
++            let path_obj = zbus::zvariant::ObjectPath::try_from(device_path.as_str()).ok()?;
++            let ap_reply = self.conn
++                .call_method(
++                    Some("org.freedesktop.NetworkManager"),
++                    &path_obj,
++                    Some("org.freedesktop.DBus.Properties"),
++                    "Get",
++                    &("org.freedesktop.NetworkManager.Device.Wireless", "ActiveAccessPoint"),
++                )
++                .await
++                .ok()?;
++
++            let ap_val = ap_reply.body().deserialize::<zbus::zvariant::OwnedValue>().ok()?;
++            let ap_path = zbus::zvariant::OwnedObjectPath::try_from(zbus::zvariant::Value::from(ap_val)).ok()?;
++            if ap_path.as_str() == "/" {
++                continue;
++            }
++
++            let ssid_owned = self.get_ap_property(ap_path.as_str(), "Ssid").await.ok()?;
++            let ssid_bytes: Vec<u8> = match zbus::zvariant::Value::from(ssid_owned) {
++                zbus::zvariant::Value::Array(a) => a.iter().filter_map(|iv| u8::try_from(iv).ok()).collect(),
++                _ => Vec::new(),
++            };
++            let ssid = String::from_utf8_lossy(&ssid_bytes).to_string();
++            if !ssid.is_empty() {
++                return Some(ssid);
++            }
++        }
++
++        None
++    }
++
+     pub async fn has_saved_connection(&self, ssid: &str) -> bool {
+         self.find_connection_by_ssid(ssid).await.is_some()
+     }

@@ -1,16 +1,8 @@
-# arch-dotfilescurrent
+# dotfiles
 
 Private Arch/Hyprland system configuration for reproducing this laptop setup as closely as possible on a fresh install.
 
 This repository is intended for personal restoration, not as a generic public rice. It captures the active Hyprland, Waybar, Orbit, OSD, audio, theme, package, and wallpaper setup while excluding browser secrets and volatile application state.
-
-## Showcase
-
-Current desktop previews are stored in `docs/showcase/`. GitHub README files do not support JavaScript carousels, so this uses a compact horizontal thumbnail strip. Click any preview to open it full-size, then use the browser/GitHub image viewer to move through them.
-
-| Preview | Preview | Preview | Preview | Preview |
-| --- | --- | --- | --- | --- |
-| [<img src="docs/showcase/Screenshot_20260518_171138.png" width="220" alt="Desktop preview 1">](docs/showcase/Screenshot_20260518_171138.png) | [<img src="docs/showcase/Screenshot_20260518_171237.png" width="220" alt="Desktop preview 2">](docs/showcase/Screenshot_20260518_171237.png) | [<img src="docs/showcase/Screenshot_20260518_171327.png" width="220" alt="Desktop preview 3">](docs/showcase/Screenshot_20260518_171327.png) | [<img src="docs/showcase/Screenshot_20260518_171641.png" width="220" alt="Desktop preview 4">](docs/showcase/Screenshot_20260518_171641.png) | [<img src="docs/showcase/Screenshot_20260518_171712.png" width="220" alt="Desktop preview 5">](docs/showcase/Screenshot_20260518_171712.png) |
 
 ## Important Keybindings
 
@@ -49,8 +41,8 @@ Current desktop previews are stored in `docs/showcase/`. GitHub README files do 
 Clone and run:
 
 ```bash
-git clone https://github.com/YOUR_GITHUB_USER/arch-dotfilescurrent.git
-cd arch-dotfilescurrent
+git clone https://github.com/YOUR_GITHUB_USER/dotfiles.git
+cd dotfiles
 ./bootstrap.sh
 ```
 
