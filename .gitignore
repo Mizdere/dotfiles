@@ -22,3 +22,17 @@ target/
 src/
 pkg/
 *.pkg.tar.zst
+
+# Environment
+.env
+.env.*
+
+# Editor artifacts
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
