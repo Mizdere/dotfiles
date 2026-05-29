@@ -50,12 +50,12 @@ This repository is intended for personal restoration, not as a generic public ri
 Clone and run:
 
 ```bash
-git clone https://github.com/YOUR_GITHUB_USER/dotfiles.git
+git clone https://github.com/Mizdere/dotfiles.git
 cd dotfiles
 ./bootstrap.sh
 ```
 
-If GitHub CLI is used later, replace `YOUR_GITHUB_USER` with the real account or use the SSH remote.
+Or use the SSH remote for GitHub CLI.
 
 ## What This Restores
 

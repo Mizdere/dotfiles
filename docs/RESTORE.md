@@ -5,8 +5,8 @@ This repo is designed for a fresh Arch install or a similar Arch laptop. It is n
 ## Basic Restore
 
 ```bash
-git clone https://github.com/YOUR_GITHUB_USER/arch-dotfilescurrent.git
-cd arch-dotfilescurrent
+git clone https://github.com/YOUR_GITHUB_USER/dotfiles.git
+cd dotfiles
 ./bootstrap.sh
 ```
 
