@@ -1,5 +1,13 @@
 # dotfiles
 
+Private Arch/Hyprland system configuration
+
+## Showcase
+
+| Preview | Preview | Preview | Preview |
+| --- | --- | --- | --- |
+| [<img src="Pictures/example/image.png" width="220" alt="Desktop preview 1">](Pictures/example/image.png) | [<img src="Pictures/example/image2.png" width="220" alt="Desktop preview 2">](Pictures/example/image2.png) | [<img src="Pictures/example/image3.png" width="220" alt="Desktop preview 3">](Pictures/example/image3.png) | [<img src="Pictures/example/image4.png" width="220" alt="Desktop preview 4">](Pictures/example/image4.png) |
+
 Private Arch/Hyprland system configuration for reproducing this laptop setup as closely as possible on a fresh install.
 
 This repository is intended for personal restoration, not as a generic public rice. It captures the active Hyprland, Waybar, Orbit, OSD, audio, theme, package, and wallpaper setup while excluding browser secrets and volatile application state.
