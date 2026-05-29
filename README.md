@@ -1,6 +1,6 @@
 # dotfiles
 
-Private Arch/Hyprland system configuration
+Arch/Hyprland dotfiles
 
 ## Showcase
 
@@ -9,9 +9,9 @@ Private Arch/Hyprland system configuration
 <img src="Pictures/example/image3.png" width="49%" alt="Desktop preview 3">
 <img src="Pictures/example/image4.png" width="49%" alt="Desktop preview 4">
 
-Private Arch/Hyprland system configuration for reproducing this laptop setup as closely as possible on a fresh install.
+Rice dotfiles for reproducing my laptop setup as closely as possible on a fresh install
 
-This repository is intended for personal restoration, not as a generic public rice. It captures the active Hyprland, Waybar, Orbit, OSD, audio, theme, package, and wallpaper setup while excluding browser secrets and volatile application state.
+This repository is intended for personal restoration, but feel free to use it. It captures the active Hyprland, Waybar, Orbit, OSD, audio, theme, package, and wallpaper setup.
 
 ## Important Keybindings
 
