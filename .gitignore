@@ -17,6 +17,9 @@ pulse/cookie
 *.AppImage
 dotfiles/local/bin/orbit
 
+# pipx-generated entry points (user-specific paths)
+dotfiles/local/bin/pywalfox
+
 # Build output
 target/
 src/
