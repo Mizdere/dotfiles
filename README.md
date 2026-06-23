@@ -4,7 +4,10 @@ Arch/Hyprland dotfiles
 
 ## Showcase
 
-<img src="Pictures/example/image.png" width="49%" alt="Desktop preview">
+<img src="Pictures/example/image.png" width="49%" alt="Desktop preview 1">
+<img src="Pictures/example/image2.png" width="49%" alt="Desktop preview 2">
+<img src="Pictures/example/image3.png" width="49%" alt="Desktop preview 3">
+<img src="Pictures/example/image4.png" width="49%" alt="Desktop preview 4">
 
 Rice dotfiles for reproducing my laptop setup as closely as possible on a fresh install
 
