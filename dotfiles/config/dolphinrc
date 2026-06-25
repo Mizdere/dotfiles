@@ -1,0 +1,22 @@
+[ExtractDialog]
+2048x1152 screen: Window-Maximized=true
+2048x1280 screen: Window-Maximized=true
+DirHistory[$e]=$HOME/Documents,$HOME/Documents/
+
+[General]
+Version=202
+ViewPropsTimestamp=2026,3,27,22,26,3.025
+
+[IconsMode]
+PreviewSize=144
+
+[KFileDialog Settings]
+Places Icons Auto-resize=false
+Places Icons Static Size=22
+
+[MainWindow]
+MenuBar=Disabled
+
+[Terminal]
+ShowTerminal=true
+TerminalHeight=1

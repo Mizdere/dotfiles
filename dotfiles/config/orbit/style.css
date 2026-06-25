@@ -196,10 +196,22 @@ password-entry {
 .orbit-toggle-switch {
     min-width: 34px;
     min-height: 18px;
+    background: #2a2a2a;
+    border: 1px solid #555555;
+}
+
+.orbit-toggle-switch:checked {
+    background: #ffffff;
+    border: 1px solid #ffffff;
 }
 
 .orbit-toggle-switch slider {
     min-width: 12px;
     min-height: 12px;
-    margin: 3px;
+    margin: 2px;
+    background: #aaaaaa;
+}
+
+.orbit-toggle-switch:checked slider {
+    background: #000000;
 }

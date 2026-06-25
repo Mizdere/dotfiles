@@ -15,15 +15,18 @@ backup_path() {
   fi
 }
 
-for item in hypr waybar orbit systemd dunst rofi fuzzel gtk-3.0 gtk-4.0 qt6ct wallust fastfetch mpv zathura environment.d; do
+for item in hypr waybar orbit systemd dunst rofi fuzzel gtk-3.0 gtk-4.0 qt6ct wallust fastfetch mpv zathura environment.d dolphinrc konsolerc; do
   backup_path "$HOME/.config/$item"
 done
 
-mkdir -p "$HOME/.config" "$HOME/.local/bin" "$HOME/.local/share/applications" "$HOME/Pictures"
+mkdir -p "$HOME/.config" "$HOME/.local/bin" "$HOME/.local/share/applications" "$HOME/.local/share/konsole" "$HOME/Pictures"
 rsync -a "$repo_root/dotfiles/config/" "$HOME/.config/"
 rsync -a "$repo_root/dotfiles/local/bin/" "$HOME/.local/bin/"
 if [[ -d "$repo_root/dotfiles/local/share/applications" ]]; then
   rsync -a "$repo_root/dotfiles/local/share/applications/" "$HOME/.local/share/applications/"
+fi
+if [[ -d "$repo_root/dotfiles/local/share/konsole" ]]; then
+  rsync -a "$repo_root/dotfiles/local/share/konsole/" "$HOME/.local/share/konsole/"
 fi
 rsync -a "$repo_root/dotfiles/Pictures/" "$HOME/Pictures/"
 chmod +x "$HOME/.local/bin/"* 2>/dev/null || true
